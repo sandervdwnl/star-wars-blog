@@ -2,10 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
+
+// For usage username etc
+use Illuminate\Support\Facades\Auth;
+// For DB queries
+use Illuminate\Support\Facades\DB;
+// Form validation class
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
+
+    protected $posts;
+
     /**
      * Display a listing of the resource.
      *
@@ -13,9 +24,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        // $posts = DB::table('posts')->get();
+        // Accesses Post table via Post Model,
+        // selects all posts
+        // and saves all posts in array
+        $posts = Post::all();
 
-        // return view('index', ['index' => $posts]);
+        // Return views/posts/index with $posts array
+        return view('posts.index')
+        ->with('posts', $posts);      
     }
 
     /**
@@ -25,7 +41,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        // return view posts/create to display create form
+        return view('posts.create');
     }
 
     /**
@@ -36,7 +53,25 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate input
+        $request->validate([
+            'title' => 'required|min:3',
+            'content' => 'required|min:50'
+        ]);
+       
+        // new Post object
+        $post = new Post([
+            'title' => $request->input('title'),
+            'content' => $request->input('content'),
+            'author' => Auth::user()->name
+        ]);
+        // Save 
+        $post->save();
+
+        // return the index view by calling index() method
+        return $this->index()->with(["message" => "Post "  . $post->title . " is created"]);
+
+    
     }
 
     /**
@@ -47,7 +82,11 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        // select single post with id argument
+        $post = Post::where('id', $id)->first();
+
+        // return a single post view with array $post
+        return view('posts.show')->with(['post' => $post]); 
     }
 
     /**
@@ -58,7 +97,11 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        // select post row from id
+        $post = Post::where('id', $id)->first();
+
+        // return a single post view with array $post
+        return view('posts.edit')->with(['post' => $post]); 
     }
 
     /**
@@ -70,7 +113,21 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // validate input
+        $request->validate([
+            'title' => 'required|min:3',
+            'content' => 'required|min:50'
+        ]);
+
+        // Update query
+        Post::where('id', $id)
+        ->update([
+            'title' => $request->input('title'),
+            'content' => $request->input('content')
+            ]);
+
+        // redirect
+        return $this->index()->with(["message" => "Post is updated"]);
     }
 
     /**
@@ -81,6 +138,10 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // select single post with id argument
+        $post = Post::where('id', $id)->delete();
+
+        // redirect with message
+        return $this->index()->with(["message" => "Post is deleted"]);
     }
 }

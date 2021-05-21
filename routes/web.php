@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Dashboard linked with redirect to login
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
@@ -29,11 +30,15 @@ Route::get('/home', function () {
     return view('home', $data);
 });
 
-Route::get('/index', function () {
+Route::get('/posts', function () {
     $posts = DB::table('posts')->get();
-    return view('index', ['posts' => $posts] );
+    return view('posts.index', ['posts' => $posts] );
 });
 
 
-// Route::resource('post', 'PostController',
-//                 ['only' => ['index']]);
+
+// Route to resource controller, 
+// only one route required.
+//check php artisan route:list --name=posts --compact for all routes
+Route::resource("posts", PostController::class);
+
