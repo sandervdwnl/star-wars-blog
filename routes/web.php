@@ -15,10 +15,6 @@ use App\Http\Controllers\PostController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 // Dashboard linked with redirect to login
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -26,13 +22,10 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/home', function () {
-    return view('home', $data);
-});
 
-Route::get('/posts', function () {
+Route::get('/', function () {
     $posts = DB::table('posts')->get();
-    return view('posts.index', ['posts' => $posts] );
+    return view('home', ['posts' => $posts] );
 });
 
 

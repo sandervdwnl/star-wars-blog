@@ -18,6 +18,7 @@
                     <x-nav-link :href="route('posts.index')">
                         {{ __('Posts') }}
                     </x-nav-link>
+
                 </div>
             </div>
 

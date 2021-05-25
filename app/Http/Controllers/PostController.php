@@ -17,6 +17,11 @@ class PostController extends Controller
 
     protected $posts;
 
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['idex', 'show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -56,14 +61,14 @@ class PostController extends Controller
         // Validate input
         $request->validate([
             'title' => 'required|min:3',
-            'content' => 'required|min:50'
+            'content' => 'required|min:50',
         ]);
        
         // new Post object
         $post = new Post([
             'title' => $request->input('title'),
             'content' => $request->input('content'),
-            'author' => Auth::user()->name
+            'user_id' => auth()->user()->id
         ]);
         // Save 
         $post->save();
