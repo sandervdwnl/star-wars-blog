@@ -12,7 +12,9 @@
 
                     <h2>Posts Page</h2>
 
-                    <a href="{{ url('posts/create') }}" class="btn btn-secondary mr-2">Create A New Post</a>
+                    @auth
+                    <a href="{{ url('posts/create') }}" class="btn btn-secondary mr-2"><i class="fas fa-plus"></i> Create A New Post</a>
+                    @endauth
 
                     @if (isset($message))
                     <p class="bg-info mt-2 text-center p-2">
@@ -24,19 +26,25 @@
 
                         {{-- sue $posts from index() of PostController --}}
                         @foreach ($posts as $post)
-                        <div class="col-3">
+                        <div class="col-3 mt-4">
                             <div class="card" style="width: 18rem;">
                                 @if( empty( $post->featured_image ))
                                 <img src="{{ URL::asset('img/placeholder-image.png') }}" alt="" title="">
                                 @else
                                 {{-- img found --}}
-                                <img class="card-img-top" src="{{ $post->featured_image }}" alt="Card image cap">
+
+                                <img class="card-img-top" src="{{ asset('storage/' . $post->featured_image ) }}" alt="Card image cap">
                                 @endif
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $post->title }}</h5>
-                                    <p><small><b>By:</b> {{ $post->author ?? 'unknown' }}</small></p>
+                                    <p><small><b>By:</b> {{ ucfirst( auth()->user()->name ) ?? 'unknown' }}</small></p>
                                     <p class="card-text">{{ Str::words( $post->content, 25 ) }}</p>
-                                    <a href="/posts/{{ $post->id }}" class="btn btn-primary">Read More</a>
+                                    <a href="/posts/{{ $post->id }}" class="btn btn-primary"><i class="fas fa-angle-double-right"></i> Read More</a>
+                                    @if ($post->featured == 1)
+                                    <span class="ml-1"><i class="fas fa-star text-yellow-300"></i> Featured</span>
+                                    @endif
+
+
                                 </div>
                             </div>
                         </div>

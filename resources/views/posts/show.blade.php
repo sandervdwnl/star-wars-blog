@@ -11,7 +11,7 @@
                 <div class="p-6 bg-white border-b border-gray-200">
 
                     @auth
-                    <div class="container inline-flex pl-0
+                    <div class="container inline-flex pl-0 justify-center
                     ">
 
                         @if(isset( $message))
@@ -44,7 +44,7 @@
                                 <img src="{{ URL::asset('img/placeholder-image.png') }}" alt="" title="">
                                 @else
                                 {{-- img found --}}
-                                <img class="card-img-top" src="{{ $post->featured_image }}" alt="Card image cap">
+                                <img class="card-img-top" src="{{ asset('storage/' . $post->featured_image ) }}" alt="Card image cap">
                                 @endif
                                 <div class="card-body">
                                     <h3 class="card-title text-center">{{ $post->title }}</h5>
