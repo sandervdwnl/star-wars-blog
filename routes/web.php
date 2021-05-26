@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,12 +24,12 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 
-Route::get('/', function () {
-    $posts = DB::table('posts')->get();
-    return view('home', ['posts' => $posts] );
-});
+// Route::get('/', function () {
+//     $posts = DB::table('posts')->get();
+//     return view('home', ['posts' => $posts] );
+// });
 
-
+Route::get('/', [Pagescontroller::class, 'index']);
 
 // Route to resource controller, 
 // only one route required.
