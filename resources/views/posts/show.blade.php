@@ -44,11 +44,15 @@
                                 <img src="{{ URL::asset('img/placeholder-image.png') }}" alt="" title="">
                                 @else
                                 {{-- img found --}}
+<<<<<<< HEAD
                                 <img class="card-img-top" src="{{ asset('storage/' . $post->featured_image ) }}" alt="Card image cap">
+=======
+                                <img class="card-img-top" src="{{ asset('storage/') . '/' . $post->featured_image }}" alt="Card image cap">
+>>>>>>> pages
                                 @endif
                                 <div class="card-body">
                                     <h3 class="card-title text-center">{{ $post->title }}</h5>
-                                        <p><small><b>By:</b> {{ $post->author ?? 'Unknown' }}</small></p>
+                                        <p><small><b>By:</b> {{ $post->author ?? 'Unknown' }} <b>Published</b> {{ $post->created_at->diffForHumans() }}</small></p>
                                         <p class="card-text">{{ $post->content }}</p>
                                 </div>
                             </div>
