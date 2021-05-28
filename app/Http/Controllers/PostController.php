@@ -63,13 +63,34 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|min:3',
             'content' => 'required|min:50',
+            'featured_image' => 'mimetypes:image/jpeg|max:2560'
         ]);
-       
-        // new Post object
+
+        
+        // Featured Image, move to public storage
+        // Store gives file a random filename
+        if($request->has('featured_image') ) {
+            $img_path = $request->file('featured_image')->store('images', 'public');
+        }
+        else {
+            $img_path = '';
+        }
+
+        // Featured 
+        if($request->has('featured')) {
+            $featured = 1;
+        }
+        else {
+            $featured = 0;
+        }
+
+        // Store new Post object
         $post = new Post([
             'title' => $request->input('title'),
             'content' => $request->input('content'),
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
+            'featured_image' => $img_path,
+            'featured' => $featured
         ]);
         // Save 
         $post->save();
@@ -77,7 +98,6 @@ class PostController extends Controller
         // return the index view by calling index() method
         return $this->index()->with(["message" => "Post "  . $post->title . " is created"]);
 
-    
     }
 
     /**
