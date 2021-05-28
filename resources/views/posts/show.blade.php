@@ -41,19 +41,35 @@
 
                         <div class="col-md-8 offset-md-2">
                             <div class="post">
-                                @if( empty( $post->featured_image ))
+                                @if( ( $post->featured_image ) == 'img/')
                                 <img src="{{ URL::asset('img/placeholder-image.png') }}" alt="" title="">
                                 @else
                                 {{-- img found --}}
-                                <img class="card-img-top" src="{{ asset('storage/') . '/' . $post->featured_image }}" alt="Card image cap">
+                                <img class="card-img-top" src="{{ url('/' . $post->featured_image . '_xl.jpg') }}" alt="Card image cap">
                                 @endif
                                 <div class="card-body">
                                     <h3 class="card-title text-center">{{ $post->title }}</h5>
-                                        <p><small><b>By:</b> {{ $post->author ?? 'Unknown' }} <b>Published</b> {{
+                                        <p><small><b>By:</b> {{ ucfirst($post->author) ?? 'Unknown' }} <b>Published</b> {{
                                                 $post->created_at->diffForHumans() }}</small></p>
                                         <p class="card-text">{{ $post->content }}</p>
                                 </div>
                             </div>
+                        </div>
+
+
+
+                        <h2 class="block w-full text-center mt-8">Comments</h2>
+
+                        <div class="comments-form col-md-8 offset-md-2">
+                            @if(isset($comment))
+
+                            @foreach ($comment as $comment)
+                            <p class="author"><b>Written by {{ $comment->author  }}</b> {{ $comment->created_at->diffForHumans() }}
+                            </p>
+                            <p class="comment">{{ $comment->comment }}</p>
+                            @endforeach
+
+                            @endif
                         </div>
 
                         <h2 class="block w-full text-center mt-8">Leave A Comment</h2>
@@ -69,20 +85,6 @@
                                 <input type="hidden" name="post_id" value="{{ $post->id }}">
                                 <input type="submit" value="Submit Comment" class="bg-green-300 mt-4 font-bold text-gray-500 py-2 px-4 rounded shadow hover:bg-green-200">
                             </form>
-                        </div>
-
-                        <h2 class="block w-full text-center mt-8">Comments</h2>
-
-                        <div class="comments-form col-md-8 offset-md-2">
-                            @if(isset($comment))
-
-                            @foreach ($comment as $comment)
-                            <p class="author"><b>Written by {{ $comment->author  }}</b> {{ $comment->created_at->diffForHumans() }}
-                            </p>
-                            <p class="comment">{{ $comment->comment }}</p>
-                            @endforeach
-
-                            @endif
                         </div>
 
                     </div>

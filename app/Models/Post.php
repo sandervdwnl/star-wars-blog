@@ -15,7 +15,8 @@ class Post extends Model
         'content',
         'featured_image',
         'featured',
-        'user_id'
+        'user_id',
+        'author'
     ];
 
     public function user() 

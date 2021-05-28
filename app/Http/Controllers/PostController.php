@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 // Form validation class
 use Illuminate\Support\Facades\Validator;
+// Image Intervention 
+use Intervention\Image\Facades\Image;
 
 class PostController extends Controller
 {
@@ -59,17 +61,48 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate input
-        $request->validate([
+         // Validate input
+         $request->validate([
             'title' => 'required|min:3',
             'content' => 'required|min:50',
+            'featured_image' => 'mimetypes:image/jpeg|max:2000'
         ]);
-       
-        // new Post object
+
+        // Featured Image, move to public storage
+        // Store gives file a random filename
+        if($request->has('featured_image') ) {
+            // Image Intervention
+            $og_img = Image::make($request->featured_image);
+
+            // Image name without extensions (1234567)
+            $img_name = rand(1111,9999) * rand(1, 9);
+
+            // Resize for XL quailty 85 in public/img/1234567_xl.jpg
+            $img_xl = $og_img->resize(1200,800)->save( public_path('/img/' . $img_name . '_xl.jpg'), 85 );
+            // Resize for MD quailty 85 in public/img/1234_xl.jpg
+            $img_thumb = $og_img->resize(300,200)->save( public_path('/img/' . $img_name . '_thumb.jpg'), 85 );
+        
+        }
+        else { // no image uploaded
+            $img_name = '';
+        }
+
+        // Featured 
+        if($request->has('featured')) {
+            $featured = 1;
+        }
+        else {
+            $featured = 0;
+        }
+
+        // Store new Post object
         $post = new Post([
             'title' => $request->input('title'),
             'content' => $request->input('content'),
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
+            'author' => auth()->user()->name,
+            'featured_image' => 'img/' . $img_name,
+            'featured' => $featured,
         ]);
         // Save 
         $post->save();
@@ -77,7 +110,6 @@ class PostController extends Controller
         // return the index view by calling index() method
         return $this->index()->with(["message" => "Post "  . $post->title . " is created"]);
 
-    
     }
 
     /**
@@ -125,14 +157,45 @@ class PostController extends Controller
         // validate input
         $request->validate([
             'title' => 'required|min:3',
-            'content' => 'required|min:50'
+            'content' => 'required|min:50',
+            'featured_image' => 'mimetypes:image/jpeg|max:2000',
         ]);
+
+           // Featured Image, move to public storage
+        // Store gives file a random filename
+        if($request->has('featured_image') ) {
+
+            // Image Intervention
+            $og_img = Image::make($request->featured_image);
+
+            // Image name without extensions (1234567)
+            $img_name = rand(1111,9999) * rand(1, 9);
+
+            // Resize for XL quailty 85 in public/img/1234567_xl.jpg
+            $img_xl = $og_img->resize(1200,800)->save( public_path('/img/' . $img_name . '_xl.jpg'), 85 );
+            // Resize for MD quailty 85 in public/img/1234_xl.jpg
+            $img_thumb = $og_img->resize(300,200)->save( public_path('/img/' . $img_name . '_thumb.jpg'), 85 );
+            
+        }
+        else { // no image uploaded
+            $img_name = '';
+        }
+
+        // Featured 
+        if($request->has('featured')) {
+            $featured = 1;
+        }
+        else {
+            $featured = 0;
+        }
 
         // Update query
         Post::where('id', $id)
         ->update([
             'title' => $request->input('title'),
-            'content' => $request->input('content')
+            'content' => $request->input('content'),
+            'featured_image' => 'img/' . $img_name,
+            'featured' => $featured,
             ]);
 
         // redirect
@@ -147,6 +210,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
+        
         // select single post with id argument
         $post = Post::where('id', $id)->delete();
 

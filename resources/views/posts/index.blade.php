@@ -26,19 +26,26 @@
 
                         {{-- sue $posts from index() of PostController --}}
                         @foreach ($posts as $post)
-                        <div class="col-3">
+                        <div class="col-3 mt-4">
                             <div class="card" style="width: 18rem;">
-                                @if( empty( $post->featured_image ))
+                                @if( ( $post->featured_image ) == 'img/')
                                 <img src="{{ URL::asset('img/placeholder-image.png') }}" alt="" title="">
                                 @else
                                 {{-- img found --}}
-                                <img class="card-img-top" src="{{ asset('storage/') . '/' . $post->featured_image }}" alt="Card image cap">
+                                <img class="card-img-top" src="{{ url('/' . $post->featured_image . '_thumb.jpg') }}" alt="Card image cap">
                                 @endif
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $post->title }}</h5>
-                                    <p><small><b>By:</b> {{ $post->author ?? 'unknown' }} <b>Published</b> {{ $post->created_at->diffForHumans() }}</small></p>
+                                    <h5 class="card-title">{{ $post->title }}
+                                        @auth
+                                        @if( $post->featured == 1 )
+                                        <i class="fas fa-star text-yellow-300"></i>
+                                        @endif
+                                        @endauth
+                                    </h5>
+                                    <p><small><b>By:</b> {{ ucfirst($post->author) ?? 'unknown' }} <b>Published</b> {{ $post->created_at->diffForHumans() }}</small></p>
                                     <p class="card-text">{{ Str::words( $post->content, 25 ) }}</p>
                                     <a href="/posts/{{ $post->id }}" class="bg-green-300 font-bold text-gray-500 py-2 px-4 rounded shadow hover:bg-green-200"><i class="fas fa-book-reader"></i> Read</a>
+
                                 </div>
                             </div>
                         </div>

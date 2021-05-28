@@ -27,15 +27,24 @@
                                 </div>
                                 @endif
 
-                                <form method="POST" action="/posts">
+                                <form method="POST" action="/posts" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
                                         <label for="Title">Title</label>
-                                        <input type="text" class="form-control" name="title" id="title" placeholder="Enter title">
+                                        <input type="text" class="form-control" name="title" id="title" placeholder="Enter title" value="{{ old('title') }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="content">Content</label>
-                                        <textarea class="form-control" id="content" name="content" placeholder="Enter content"></textarea>
+                                        <textarea class="form-control" id="content" name="content" placeholder="Enter content">{{ old('content') }}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="content">Featured Post</label>
+                                        <input type="checkbox" name="featured" id="featured" class="ml-2">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="featured_image">Upload Featured Image</label><br>
+                                        <input type="file" name="featured_image" id="featured_image">
+                                        <p><small>Filetypes allowed: jpg and/or jpeg</small></p>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit Post</button>
                                 </form>
