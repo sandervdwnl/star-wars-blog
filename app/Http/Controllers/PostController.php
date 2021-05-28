@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Models\Comment;
 
 // For usage username etc
 use Illuminate\Support\Facades\Auth;
@@ -90,8 +91,11 @@ class PostController extends Controller
         // select single post with id argument
         $post = Post::where('id', $id)->first();
 
+        // select comments from comments table
+        $comment = Comment::where('post_id', $id)->get();
+
         // return a single post view with array $post
-        return view('posts.show')->with(['post' => $post]); 
+        return view('posts.show')->with(['post' => $post, 'comment' => $comment]); 
     }
 
     /**

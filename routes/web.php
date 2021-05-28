@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,12 +24,7 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-
-// Route::get('/', function () {
-//     $posts = DB::table('posts')->get();
-//     return view('home', ['posts' => $posts] );
-// });
-
+// Homepage, displays views/index.blade.php
 Route::get('/', [Pagescontroller::class, 'index']);
 
 // Route to resource controller, 
@@ -36,3 +32,5 @@ Route::get('/', [Pagescontroller::class, 'index']);
 //check php artisan route:list --name=posts --compact for all routes
 Route::resource("posts", PostController::class);
 
+// Route to CommentController
+Route::resource('comments', CommentController::class);
