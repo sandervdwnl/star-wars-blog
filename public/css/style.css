@@ -1,11 +1,58 @@
+
 #hero {
     background-image: url(http://127.0.0.1:8000/img/hero-2.jpg);
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center;
+    /* background-position: center; */
     
 }
 
 h1 {
     font-family: 'Squada One', cursive;
+}
+
+a {
+    color: #777;
+}
+
+a.active {
+    color: rgba(110, 231, 183);
+}
+
+a:hover {
+    text-decoration: none!important;
+    opacity: .7;
+}
+
+/* MD */
+@media (min-width: 768px) {
+
+    #navLinks,
+    #navBar {
+        flex-direction: row !important;
+        visibility: visible !important;
+    }
+}
+
+/* LG */
+@media (min-width: 1024px) {
+    #stormtrooper-banner {
+        height: 400px;
+        object-fit: cover;
+        width: 100%;
+    }
+}
+
+/* XL */
+@media (min-width: 1280px) {
+    #stormtrooper-banner {
+        height: 500px;
+    }
+}
+
+/* 2XL */
+@media (min-width: 1536px) {
+    #hero {
+        height: 36rem;
+    }
 }

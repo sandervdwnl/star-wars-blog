@@ -14,30 +14,35 @@
                     <div class="container inline-flex pl-0
                     ">
 
+                        {{-- Messages --}}
                         @if(isset( $message))
                         {{ $message }}
                         @endif
 
+                        {{-- Edit post, route to edit.blade.php --}}
                         @auth
                         <a class="btn btn-warning mr-2" href="http://127.0.0.1:8000/posts/{{ $post->id }}/edit">Edit</a>
 
+                        {{-- Delete post, DELETE request form --}}
                         <form action="/posts/{{ $post->id }}" method="post">
                             @csrf
                             @method('delete')
                             <input type="submit" class="btn btn-danger" value="Delete">
                         </form>
 
-                        @if (isset($message)) <p class="bg-info mt-2 text-center p-2">
-                            <b>{{ $message }}</b>
-                        </p>
-                        @endif
-
                     </div>
                     @endauth
 
+
                     <div class="row mt-2">
 
-                        {{-- sue $posts from index() of PostController --}}
+                        {{-- Back button --}}
+                        <div class="w-100 text-center mb-8">
+                            <a href="/posts" class="bg-green-300 font-bold text-gray-500 py-2 px-4 rounded shadow hover:bg-green-200"><i class="fas fa-arrow-alt-circle-left"></i> Back to Blog</a>
+                        </div>
+
+                        {{-- Show single post from $post{id} --}}
+                        {{-- $posts from index() of PostController --}}
 
                         <div class="col-md-8 offset-md-2">
                             <div class="post">
@@ -49,22 +54,25 @@
                                 @endif
                                 <div class="card-body">
                                     <h3 class="card-title text-center">{{ $post->title }}</h5>
-                                        <p><small><b>By:</b> {{ ucfirst($post->author) ?? 'Unknown' }} <b>Published</b> {{
+                                        <p><small><b>By:</b> {{ ucfirst($post->author) ?? 'Unknown' }} <b>Published</b>
+                                                {{
                                                 $post->created_at->diffForHumans() }}</small></p>
                                         <p class="card-text">{{ $post->content }}</p>
                                 </div>
                             </div>
                         </div>
 
-
+                        {{-- Comments section --}}
 
                         <h2 class="block w-full text-center mt-8">Comments</h2>
 
+                        {{-- Get comments --}}
                         <div class="comments-form col-md-8 offset-md-2">
                             @if(isset($comment))
 
                             @foreach ($comment as $comment)
-                            <p class="author"><b>Written by {{ $comment->author  }}</b> {{ $comment->created_at->diffForHumans() }}
+                            <p class="author"><b>Written by {{ $comment->author }}</b> {{
+                                $comment->created_at->diffForHumans() }}
                             </p>
                             <p class="comment">{{ $comment->comment }}</p>
                             @endforeach
@@ -72,8 +80,10 @@
                             @endif
                         </div>
 
+
                         <h2 class="block w-full text-center mt-8">Leave A Comment</h2>
 
+                        {{-- Add a comment --}}
                         <div class="comments-form col-md-8 offset-md-2">
                             <form action="/comments" method="POST">
                                 @csrf
