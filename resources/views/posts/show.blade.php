@@ -68,7 +68,7 @@
 
                         {{-- Get comments --}}
                         <div class="comments-form col-md-8 offset-md-2">
-                            @if(isset($comment))
+                            @if(isset($comment) )
 
                             @foreach ($comment as $comment)
                             <p class="author"><b>Written by {{ $comment->author }}</b> {{

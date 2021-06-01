@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
+
+    protected $comments;
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +29,18 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        //Accesses Post table via Post Model,
+        // selects all posts
+        // and saves all posts in array
+        // $comments = DB::table('comments')->orderByDesc('created_at')->get();
+
+        // Return views/posts/index with $posts array
+        // return view('comments.index')
+        // ->with('comments', $comments);    
+        
+        return view('comments.index', [
+            'comments' => Comment::paginate(25)
+        ]);
     }
 
     /**
@@ -56,26 +75,15 @@ class CommentController extends Controller
         $comment = new Comment([
             'author' => $request->input('author'),
             'comment' => $request->input('comment'),
-            'post_id'=> $post_id
+            'post_id'=> $post_id,
+            'approved' => 0,
         ]);
         // Save 
         $comment->save();
 
-        $post = Post::where('id', $post_id)->first();
-
-        // return view('posts.show')
-        // ->with([
-        //     'comment' => $comment,
-        //     'post' => $post
-        // ]);      
+        $post = Post::where('id', $post_id)->first();   
 
         return back();
-
-        // return redirect('/posts/{{post_id}}')->with([
-        //     'comment' => $comment,
-        //     'post' => $post
-        // ]);
-        
 
     }
 
@@ -110,7 +118,15 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $approved = $request->input('approved');
+
+        $comment = Comment::find($id);
+
+        $comment->approved = 1;
+
+        $comment->save();
+
+        return back();
     }
 
     /**
@@ -121,6 +137,10 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // select single post with id argument
+        $comment = Comment::where('id', $id)->delete();
+
+        // redirect with message
+        return back();
     }
 }

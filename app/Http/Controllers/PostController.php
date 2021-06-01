@@ -124,7 +124,11 @@ class PostController extends Controller
         $post = Post::where('id', $id)->first();
 
         // select comments from comments table
-        $comment = Comment::where('post_id', $id)->get();
+        $comment = Comment::where([
+            ['post_id', $id],
+            ['approved', 1],
+            ])
+            ->get();
 
         // return a single post view with array $post
         return view('posts.show')->with(['post' => $post, 'comment' => $comment]); 

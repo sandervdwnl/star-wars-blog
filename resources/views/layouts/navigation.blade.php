@@ -16,9 +16,11 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('posts.index')">
-                        {{ __('Posts') }}
+                        {{ __('Blog') }}
                     </x-nav-link>
-
+                    <x-nav-link :href="route('comments.index')">
+                        {{ __('Comments') }}
+                    </x-nav-link>
                 </div>
             </div>
 

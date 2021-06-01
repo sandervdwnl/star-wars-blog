@@ -34,3 +34,4 @@ Route::resource("posts", PostController::class);
 
 // Route to CommentController
 Route::resource('comments', CommentController::class);
+

@@ -8,6 +8,9 @@
         <ul class="nav-links flex flex-row pl-5 invisible md:visible" id="navLinks">
             <li class="pl-5"><a href="/" class="text-gray-500 font-semibold {{ Request::is('/') ? 'active' : '' }}">Homepage</a></li>
             <li class="pl-5"><a href="/posts" class="text-gray-500 font-semibold {{ Request::is('posts') ? 'active' : '' }}">Blog</a></li>
+            @auth
+            <li class="pl-5"><a href="comments" class="text-gray-500 font-semibold {{ Request::is('comments') ? 'active' : '' }}">Comments</a></li>
+            @endauth
         </ul>
 
 
