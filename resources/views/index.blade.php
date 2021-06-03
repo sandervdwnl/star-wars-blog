@@ -24,8 +24,6 @@
         <img src="/img/hero-1.jpg" alt="" id="stormtrooper-banner">
     </div>
 
-
-
     <h2 class="text-green-300 block text-2xl my-4 font-bold text-center lg:py-4 lg:px-8">Featured Posts</h2>
 
     <div class="container">

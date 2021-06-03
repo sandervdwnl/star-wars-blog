@@ -9,7 +9,17 @@
             <li class="pl-5"><a href="/" class="text-gray-500 font-semibold {{ Request::is('/') ? 'active' : '' }}">Homepage</a></li>
             <li class="pl-5"><a href="/posts" class="text-gray-500 font-semibold {{ Request::is('posts') ? 'active' : '' }}">Blog</a></li>
             @auth
-            <li class="pl-5"><a href="comments" class="text-gray-500 font-semibold {{ Request::is('comments') ? 'active' : '' }}">Comments</a></li>
+            <li class="pl-5"><a href="/comments" class="text-gray-500 font-semibold {{ Request::is('comments') ? 'active' : '' }}">Comments</a></li>
+            <li class="pl-5">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+
+                    <a href="route('logout')" class="text-gray-500 font-semibold" onclick="event.preventDefault();
+                        this.closest('form').submit();">
+                        {{ __('Log out') }}
+                    </a>
+                </form>
+            </li>
             @endauth
         </ul>
 

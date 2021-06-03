@@ -32,7 +32,7 @@
 
                         @foreach ($comments as $comment)
                         <div class="flex mb-2 border-b-2 pb-2">
-                            <div class="w-2/12">{{ $comment->comment }}</div>
+                            <div class="w-2/12">{{ Str::words($comment->comment, 3) }}</div>
                             <div class="w-2/12">{{ $comment->author }}</div>
                             <div class="w-1/12">{{ $comment->post_id }}</div>
                             <div class="w-1/12">{{ $comment->approved }}</div>
