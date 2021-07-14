@@ -25,15 +25,10 @@ class CommentFactory extends Factory
      */
     public function definition()
     {
-        // create array with all post id's
-        $posts = Post::all()->pluck('id')->toArray();
-
-        //loop through arr array and return random post_id
-        $post_id = $this->faker->randomElement($posts);
-
+        
         return [
-            //
-            'post_id'=> $post_id,
+            //selects a random post->id
+            'post_id'=> Post::all()->random()->id,
             'author' => $this->faker->name(),
             'comment' => $this->faker->realText(150),
             'approved' => 0,
